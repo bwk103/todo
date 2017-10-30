@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
     schema = mongoose.Schema;
-    mongoose.Promise = global.Promise;
 
 var todoSchema = new schema({
     name: {

@@ -1,4 +1,4 @@
-var Todo = require('../app/models/todo.model'),
+var Todo = require('../../app/models/todo.model'),
     chai = require('chai'),
     expect = chai.expect;
 
