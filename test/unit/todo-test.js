@@ -4,7 +4,7 @@ var Todo = require('../../app/models/todo.model'),
 
 chai.use(require('chai-datetime'));
 
-describe('Todo Model', () => {
+describe('Todo Model Verification', () => {
 
   describe('name', () => {
 
