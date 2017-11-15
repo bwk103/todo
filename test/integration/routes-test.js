@@ -32,30 +32,34 @@ describe('API routes', ()=> {
       });
     });
 
-    it('GET /api/todos returns all todos', (done)=> {
-        chai.request(app)
+    it('GET /api/todos returns all todos', ()=> {
+        return chai.request(app)
         .get('/api/todos')
-        .end(function(err, res){
-            expect(err).to.be.null;
-            expect(res).to.have.status(200);
-            expect(res).to.be.json;
-            expect(res.body).to.be.an('array')
-            expect(res.body).to.have.lengthOf(3);
-            done();
-        });
+        .then(function(res){
+          expect(res.error).to.be.false;
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.an('array')
+          expect(res.body).to.have.lengthOf(3);
+        })
+        .catch(function(err){
+          throw err;
+        })
     });
 
-    it('POST /api/todos adds a todo to the database', (done) => {
-        chai.request(app)
+    it('POST /api/todos adds a todo to the database', () => {
+        return chai.request(app)
         .post('/api/todos')
         .send({ name: 'Cut the grass'})
-        .end(function(err, res){
-            expect(err).to.be.null;
-            expect(res).to.have.status(201);
-            expect(res.body.name).to.equal('Cut the grass');
-            expect(res).to.be.json;
-            done();
-        });
+        .then(function(res) {
+          expect(res.error).to.be.false;
+          expect(res).to.have.status(201);
+          expect(res.body.name).to.equal('Cut the grass');
+          expect(res).to.be.json;
+        })
+        .catch(function(err){
+          throw err;
+        })
     });
   });
 
@@ -73,49 +77,52 @@ describe('API routes', ()=> {
       });
     });
 
-    it('GETS /api/todos/:todo_id returns a single todo item', (done) => {
-      db.Todo.findOne({name: 'Walk the Dog'}, function(err, foundTodo){
-        var id = foundTodo._id;
-        chai.request(app)
-        .get('/api/todos/' + id)
-        .end(function(err, res){
-          expect(err).to.be.null;
-          expect(res).to.have.status(200);
-          expect(res.body.name).to.equal('Walk the Dog');
-          expect(res).to.be.json;
-          done();
-        })
+    it('GETS /api/todos/:todo_id returns a single todo item', () => {
+      return db.Todo.findOne({name: 'Walk the Dog'})
+      .then(function(foundTodo){
+        return chai.request(app)
+        .get('/api/todos/' + foundTodo._id)
+      })
+      .then(function(res){
+        expect(res.error).to.be.false;
+        expect(res).to.have.status(200);
+        expect(res.body.name).to.equal('Walk the Dog');
+        expect(res).to.be.json;
+      })
+      .catch(function(err){
+        throw err;
       })
     });
 
-    it('PUT /api/:todo_id updates a single todo item', (done) => {
-      db.Todo.findOne({name: 'Walk the Dog'}, function(err, foundTodo){
-        var id = foundTodo._id;
-        chai.request(app)
-        .put('/api/todos/' + id)
-        .send({isDone: true})
-        .end(function(err, res){
-            expect(err).to.be.null;
-            expect(res).to.have.status(200);
-            expect(res.body.name).to.equal('Walk the Dog');
-            expect(res.body.isDone).to.equal(true);
-            expect(res).to.be.json;
-            done();
-        });
-      });
+    it('PUT /api/:todo_id updates a single todo item', () => {
+      return db.Todo.findOne({name: 'Walk the Dog'})
+        .then(function(foundTodo){
+          return chai.request(app)
+          .put('/api/todos/' + foundTodo._id)
+          .send({isDone: true})
+        })
+        .then(function(res){
+          expect(res.error).to.be.false;
+          expect(res).to.have.status(200);
+          expect(res.body.name).to.equal('Walk the Dog');
+          expect(res.body.isDone).to.equal(true);
+          expect(res).to.be.json;
+        })
     });
 
-    it('DELETE /api/todo/:todo_id deletes a single todo item', (done) => {
-      db.Todo.findOne({name: 'Walk the Dog'}, function(err, foundTodo){
-        var id = foundTodo._id;
-        chai.request(app)
-        .delete('/api/todos/' + id)
-        .end(function(err, res){
-          expect(err).to.be.null;
-          expect(res).to.have.status(200);
-          expect(res.body.message).to.equal('The todo has been successfully deleted');
-          done();
-        });
+    it('DELETE /api/todo/:todo_id deletes a single todo item', () => {
+      return db.Todo.findOne({name: 'Walk the Dog'})
+      .then(function(foundTodo){
+        return chai.request(app)
+        .delete('/api/todos/' + foundTodo._id)
+      })
+      .then(function(res){
+        expect(res.error).to.be.false;
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.eql('The todo has been successfully deleted');
+      })
+      .catch(function(err){
+        throw(err);
       })
     });
   });
