@@ -5,6 +5,7 @@ var db = require('../../app/models');
 var mongoose = require('mongoose');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
+var mongoose = require('mongoose');
 var expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -13,6 +14,8 @@ describe('API routes', ()=> {
 
   after(function(done){
     db.Todo.remove({}, function(){
+      mongoose.disconnect();
+      app.close();
       done();
     })
   })
@@ -26,10 +29,8 @@ describe('API routes', ()=> {
       done();
     });
 
-    afterEach(function(done){
-      db.Todo.remove({}, function(){
-        done();
-      });
+    afterEach((done)=> {
+      mongoose.connection.db.dropDatabase(done);
     });
 
     it('GET /api/todos returns all todos', ()=> {
@@ -56,6 +57,18 @@ describe('API routes', ()=> {
           expect(res).to.have.status(201);
           expect(res.body.name).to.equal('Cut the grass');
           expect(res).to.be.json;
+        })
+        .then(()=>{
+          return db.Todo.find();
+        })
+        .then(result => {
+          expect(result).to.have.lengthOf(4);
+        })
+        .then(()=> {
+          return db.Todo.find({name: 'Cut the grass'});
+        })
+        .then(result => {
+          expect(result).to.have.lengthOf(1);
         })
         .catch(function(err){
           throw err;

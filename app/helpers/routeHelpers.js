@@ -1,7 +1,7 @@
 var db = require('../models');
 
 
-exports.getAllTodos = function (req, res){
+getAllTodos = function (req, res){
   db.Todo.find()
   .then(function(todos){
     res.status(200);
@@ -12,7 +12,7 @@ exports.getAllTodos = function (req, res){
   })
 };
 
-exports.createNewTodo = function(req, res){
+createNewTodo = function(req, res){
   db.Todo.create(req.body)
   .then(function(newTodo){
     res.status(201);
@@ -23,7 +23,7 @@ exports.createNewTodo = function(req, res){
   })
 }
 
-exports.getOneTodo = function(req, res){
+getOneTodo = function(req, res){
   db.Todo.findById(req.params.todo_id)
   .then(function(todo){
     res.json(todo);
@@ -33,7 +33,7 @@ exports.getOneTodo = function(req, res){
   });
 }
 
-exports.updateOneTodo = function(req, res){
+updateOneTodo = function(req, res){
   db.Todo.findByIdAndUpdate(req.params.todo_id, req.body, {new: true})
   .then(function(updatedTodo){
     res.json(updatedTodo);
@@ -43,7 +43,7 @@ exports.updateOneTodo = function(req, res){
   })
 }
 
-exports.deleteOneTodo = function(req, res){
+deleteOneTodo = function(req, res){
   db.Todo.findByIdAndRemove(req.params.todo_id)
   .then(function(){
     res.json({message: 'The todo has been successfully deleted'});
@@ -51,4 +51,12 @@ exports.deleteOneTodo = function(req, res){
   .catch(function(err){
     throw(err)
   })
+}
+
+module.exports = {
+  getAllTodos: getAllTodos,
+  createNewTodo: createNewTodo,
+  getOneTodo: getOneTodo,
+  updateOneTodo: updateOneTodo,
+  deleteOneTodo: deleteOneTodo
 }

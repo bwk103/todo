@@ -1,6 +1,9 @@
-var Todo = require('../../app/models/todo.model'),
-    chai = require('chai'),
-    expect = chai.expect;
+var Todo = require('../../app/models/todo.model');
+var chai = require('chai');
+var expect = chai.expect;
+var sinon = require('sinon');
+var mongoose = require('mongoose');
+require('sinon-mongoose');
 
 chai.use(require('chai-datetime'));
 
@@ -93,4 +96,4 @@ describe('Todo Model Verification', () => {
       });
     })
   })
-});
+})

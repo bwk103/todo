@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/todos', todoRoutes)
 
-app.listen(config.app.port, () => {
+var server = app.listen(config.app.port, () => {
     console.log(`The server is running on port ${config.app.port} and is connected to ${config.db.name}`);
 })
 
-module.exports = app;
+module.exports = server;

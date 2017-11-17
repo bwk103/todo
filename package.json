@@ -4,7 +4,7 @@
   "description": "A simple todo application!",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive --timeout 15000"
   },
   "author": "",
   "license": "ISC",
@@ -14,12 +14,15 @@
     "chai-datetime": "^1.5.0",
     "chai-http": "^3.0.0",
     "cheerio": "^1.0.0-rc.2",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "sinon": "^4.1.2",
+    "sinon-mongoose": "^2.0.2"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "jquery": "^3.2.1",
-    "mongoose": "^4.12.4"
+    "mongoose": "^4.12.4",
+    "sinon-chai": "^2.14.0"
   }
 }
