@@ -1,3 +1,4 @@
+'use strict'
 
 function getTodos(){
   $.getJSON('http://localhost:3000/api/todos')

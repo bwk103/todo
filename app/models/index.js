@@ -1,9 +1,9 @@
 'use strict'
 
-var mongoose = require('mongoose');
-var config = require('../../config');
+const mongoose = require('mongoose');
+const config = require('../../config');
 
-var db = {
+const db = {
   host: 'localhost',
   port: 27017,
   name: config.isTest ? 'todolistapplication_test' : 'todolistapplication'
