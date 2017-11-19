@@ -1,9 +1,11 @@
 
-var express = require('express'),
-    app = express(),
-    config = require('./config');
-    todoRoutes = require('./app/routes/api-routes'),
-    bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const config = require('./config');
+const todoRoutes = require('./app/routes/api-routes');
+const bodyParser = require('body-parser');
+const db = require('./app/models');
+const DB_NAME = db.Todo.db.name;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -17,8 +19,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/todos', todoRoutes)
 
-var server = app.listen(config.app.port, () => {
-    console.log(`The server is running on port ${config.app.port} and is connected to ${config.db.name}`);
+
+
+var server = app.listen(config.server.port, () => {
+    console.log(`The server is running on port ${config.server.port} and is connected to ${DB_NAME}`);
 })
 
 module.exports = server;
